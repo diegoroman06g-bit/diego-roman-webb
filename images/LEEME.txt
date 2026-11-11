@@ -1,0 +1,3 @@
+Fotos (todas .jpeg, de hasta 1600 px):
+portada.jpeg (fondo de la portada), logo.png (tu logo), diego.jpeg (Sobre mi),
+foto1 a foto6 (portafolio), deporte1 a deporte3, sesion1 a sesion3 (catalogos)
