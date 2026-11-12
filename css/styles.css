@@ -42,3 +42,7 @@ input,select{width:100%;padding:12px;border:1px solid var(--line);border-radius:
 .notas{margin-top:28px;padding:22px 22px 22px 40px;background:#fff;border-left:4px solid var(--acc);border-radius:4px;color:var(--mute);display:grid;gap:8px}
 .logo{width:min(280px,70vw);height:auto;display:block}
 footer .logo{margin:0 auto 24px}
+
+#portafolio-grid{display:block;column-width:240px;column-gap:14px}
+#portafolio-grid .ph{aspect-ratio:auto;margin-bottom:14px;break-inside:avoid;background:none}
+#portafolio-grid .ph img{position:static;height:auto}
