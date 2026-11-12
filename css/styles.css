@@ -25,7 +25,9 @@ h2{font-size:clamp(2rem,5vw,3.4rem);margin-bottom:28px}
 .cat{border-top:2px solid var(--ink);padding:28px 0 56px}
 .cat p{color:var(--mute);margin-bottom:22px}
 .pk{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:26px}
-.pk div{border:1px solid var(--line);background:#fff;padding:22px;border-radius:6px;display:grid;gap:6px;align-content:start}
+.pk .item{border:1px solid var(--line);background:#fff;border-radius:6px;overflow:hidden;display:grid;align-content:start}
+.pk .item .ph{aspect-ratio:4/5;border-radius:0}
+.pk .info{padding:22px;display:grid;gap:6px;align-content:start}
 .pk strong{font-family:Archivo;font-size:2rem}.pk small{color:var(--mute)}
 .pk .btn{margin-top:10px;text-align:center;font-size:.95rem}
 footer{background:var(--ink);color:#fff;padding:56px 5vw;text-align:center}
