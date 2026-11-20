@@ -29,6 +29,10 @@ window.SITE = {
     },
     {
       id: "sesiones",
+          {
+      id: "sesiones",
+      posFoto: "center 8%",
+      titulo: "Sesiones fotográficas (solo exteriores)",
       titulo: "Sesiones fotográficas (solo exteriores)",
       detalle: "Cumpleañeras, niños, parejas y familias. Momentos naturales, emociones reales y recuerdos auténticos.",
       fotos: ["images/sesion1.jpeg", "images/sesion2.jpeg", "images/sesion3.jpeg"],

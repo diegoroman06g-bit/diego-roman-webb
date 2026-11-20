@@ -1,8 +1,8 @@
 const S = window.SITE;
 const $ = (id) => document.getElementById(id);
 const wa = (t) => `https://wa.me/${S.whatsapp}?text=${encodeURIComponent(t)}`;
-const ph = (src, alt) =>
-  `<div class="ph"><img src="${src}" alt="${alt}" loading="lazy" onerror="this.remove()"></div>`;
+const ph = (src, alt, pos) =>
+  `<div class="ph"><img src="${src}" alt="${alt}" loading="lazy" ${pos ? `style="object-position:${pos}"` : ""} onerror="this.remove()"></div>`;
 
 // Botones y redes
 $("wa-hero").href = wa("Hola Diego, quiero agendar una sesión.");
@@ -23,7 +23,7 @@ $("catalogos-box").innerHTML = S.catalogos
   .map(
     (c) => `
   <a class="cardlink" href="catalogo.html?c=${c.id}">
-    ${ph(c.fotos[0], c.titulo)}
+        ${ph(c.fotos[0], c.titulo, c.posFoto)}
     <div class="cl-text">
       <h3>${c.titulo.split(" (")[0]}</h3>
       <span>Ver paquetes y precios →</span>
