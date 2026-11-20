@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Catálogo | Diego Román</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800&family=Work+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<header>
+  <b><a href="/" style="text-decoration:none">Diego Román</a></b>
+  <nav><a class="keep" href="/#catalogos">← Volver</a></nav>
+</header>
+
+<section>
+  <div id="app"></div>
+</section>
+
+<script src="js/config.js"></script>
+<script>
+const S = window.SITE;
+const $ = (id) => document.getElementById(id);
+const wa = (t) => `https://wa.me/${S.whatsapp}?text=${encodeURIComponent(t)}`;
+const ph = (src, alt) =>
+  `<div class="ph"><img src="${src}" alt="${alt}" loading="lazy" onerror="this.remove()"></div>`;
+
+const id = new URLSearchParams(location.search).get("c");
+const c = S.catalogos.find((x) => x.id === id);
+const otro = S.catalogos.find((x) => x.id !== id);
+
+if (!c) {
+  $("app").innerHTML =
+    '<h2>Catálogo no encontrado</h2><a class="btn" href="/#catalogos">Volver al inicio</a>';
+} else {
+  document.title = c.titulo.split(" (")[0] + " | Diego Román";
+  $("app").innerHTML = `
+    <a class="back" href="/#catalogos">← Volver a catálogos</a>
+    <h2>${c.titulo}</h2>
+    <p class="det">${c.detalle}</p>
+    <div class="pk">
+      ${c.paquetes
+        .map(
+          (p, i) => `
+        <div class="item">
+          ${c.fotos[i] ? ph(c.fotos[i], p.nombre) : ""}
+          <div class="info">
+            <span>${p.nombre}</span>
+            <strong>${S.moneda} ${p.precio}</strong>
+            <small>${p.incluye}</small>
+            <a class="btn wa" href="${wa(`Hola Diego, quiero agendar: ${c.titulo} - ${p.nombre} (${S.moneda} ${p.precio}).`)}">Agendar por WhatsApp</a>
+          </div>
+        </div>`
+        )
+        .join("")}
+    </div>
+    ${
+      c.notas
+        ? `<ul class="notas">${c.notas.map((n) => `<li>${n}</li>`).join("")}</ul>`
+        : ""
+    }
+    ${
+      otro
+        ? `<br><a class="btn ghost" style="color:var(--ink)" href="catalogo.html?c=${otro.id}">Ver también: ${otro.titulo.split(" (")[0]}</a>`
+        : ""
+    }`;
+}
+</script>
+
+</body>
+</html>

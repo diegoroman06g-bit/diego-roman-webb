@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Instagram | Diego Román</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800&family=Work+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<header>
+  <b><a href="/" style="text-decoration:none">Diego Román</a></b>
+  <nav><a class="keep" href="/">← Volver</a></nav>
+</header>
+
+<section>
+  <a class="back" href="/">← Volver al inicio</a>
+  <h2>Desde mi Instagram</h2>
+  <div class="ig-grid" id="ig-grid"></div>
+  <br>
+  <a class="btn ghost" id="ig-mas" style="color:var(--ink)" href="#">Ver más en Instagram</a>
+</section>
+
+<script src="js/config.js"></script>
+<script>
+const S = window.SITE;
+document.getElementById("ig-mas").href = S.redes.instagram;
+document.getElementById("ig-grid").innerHTML = (S.instagram || [])
+  .map(
+    (u) =>
+      `<blockquote class="instagram-media" data-instgrm-permalink="${u}" data-instgrm-version="14"></blockquote>`
+  )
+  .join("");
+const sc = document.createElement("script");
+sc.async = true;
+sc.src = "https://www.instagram.com/embed.js";
+document.body.appendChild(sc);
+</script>
+
+</body>
+</html>

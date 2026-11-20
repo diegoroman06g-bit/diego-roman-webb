@@ -306,3 +306,13 @@ footer .logo {
 .tabs.sub button.on{background:var(--acc);border-color:var(--acc);color:#fff}
 .pane{padding-top:32px}
 .pane>h2{display:none}
+
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
+.cardlink{position:relative;display:block;aspect-ratio:4/3;border-radius:6px;overflow:hidden;color:#fff;text-decoration:none}
+.cardlink .ph{position:absolute;inset:0}
+.cardlink::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 35%,rgba(16,24,32,.85))}
+.cl-text{position:absolute;left:0;right:0;bottom:0;z-index:1;padding:22px;display:grid;gap:6px}
+.cl-text h3{font-size:1.8rem}
+.cl-text span{font-weight:600}
+.back{display:inline-block;margin-bottom:24px;text-decoration:none;font-weight:600;color:var(--mute)}
+.det{color:var(--mute);margin-bottom:22px}
