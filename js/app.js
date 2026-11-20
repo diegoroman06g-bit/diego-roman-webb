@@ -31,3 +31,17 @@ $("catalogos-box").innerHTML = S.catalogos
       )}</div>${c.notas ? `<ul class="notas">${c.notas.map((n) => `<li>${n}</li>`).join("")}</ul>` : ""}</article>`,
   )
   .join("");
+
+  const igs = S.instagram || [];
+if (!igs.length) {
+  $("instagram").remove();
+} else {
+  $("ig-grid").innerHTML = igs.map(u =>
+    `<blockquote class="instagram-media" data-instgrm-permalink="${u}" data-instgrm-version="14"></blockquote>`
+  ).join("");
+  $("ig-mas").href = S.redes.instagram;
+  const sc = document.createElement("script");
+  sc.async = true;
+  sc.src = "https://www.instagram.com/embed.js";
+  document.body.appendChild(sc);
+}

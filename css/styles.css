@@ -293,3 +293,5 @@ footer .logo {
   position: static;
   height: auto;
 }
+.ig-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;align-items:start}
+.ig-grid .instagram-media{min-width:0!important;max-width:100%!important;width:100%!important;margin:0!important}
