@@ -9,7 +9,7 @@ window.SITE = {
     tiktok: "https://www.tiktok.com/@diegoroman_ft"
   },
   moneda: "Bs",
-   instagram: [
+  instagram: [
     "https://www.instagram.com/p/DduhodUmMUa/",
     "https://www.instagram.com/p/DZad6b7jtlt/",
     "https://www.instagram.com/p/DSlciEQjp3N/",
@@ -29,16 +29,13 @@ window.SITE = {
     },
     {
       id: "sesiones",
-          {
-      id: "sesiones",
       posFoto: "center 8%",
-      titulo: "Sesiones fotográficas (solo exteriores)",
       titulo: "Sesiones fotográficas (solo exteriores)",
       detalle: "Cumpleañeras, niños, parejas y familias. Momentos naturales, emociones reales y recuerdos auténticos.",
       fotos: ["images/sesion1.jpeg", "images/sesion2.jpeg", "images/sesion3.jpeg"],
       paquetes: [
         { nombre: "Paquete 1", precio: 250, incluye: "1 persona · 45 minutos · 6 fotos editadas en alta calidad · 1 lugar (escogido por ti) · 1 vestuario" },
-        { nombre: "Paquete 2", precio: 400, incluye: "1 persona · 1 hora · 10 fotos editadas en alta calidad · 1 lugar (escogido por ti) · hasta 2 vestuarios" },
+        { nombre: "Paquete 2", precio: 400, incluye: "1 persona · 1 hora · 10 fotos editadas en alta calidad · hasta 2 vestuarios · 1 lugar (escogido por ti)" },
         { nombre: "Paquete 3", precio: 450, incluye: "Parejas (novios o mejores amig@s) o familia pequeña · 1 hora · 12 fotos editadas en alta calidad · 1 lugar (escogido por ti)" }
       ],
       notas: [
