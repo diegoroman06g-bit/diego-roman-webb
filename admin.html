@@ -1,133 +1,224 @@
 <!doctype html>
 <html lang="es">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <meta name="robots" content="noindex" />
-    <title>Admin</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800&family=Work+Sans:wght@400;600&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="css/styles.css" />
-  </head>
-  <body>
-    <header>
-      <b>Panel de Diego</b>
-      <nav><a class="keep" href="/">Ver sitio</a></nav>
-    </header>
-    <section>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Panel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800&family=Work+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<header>
+  <b>Panel de Diego</b>
+  <nav><a class="keep" href="/">Ver sitio</a></nav>
+</header>
+
+<section>
+
+  <div class="card" id="login">
+    <label>Contraseña de administrador
+      <input type="password" id="clave" autocomplete="current-password">
+    </label>
+    <button class="btn" id="entrar">Entrar</button>
+  </div>
+
+  <div id="panel" hidden>
+    <div class="card">
+      <h3>Nueva galería</h3>
+      <br>
+      <label>Nombre
+        <input id="titulo" placeholder="Torneo Sub-17">
+      </label>
+      <label>Tipo
+        <select id="vis">
+          <option value="privada">Privada (solo con enlace)</option>
+          <option value="publica">Pública (aparece en el sitio)</option>
+        </select>
+      </label>
+      <label>Fotos
+        <input type="file" id="fotos" multiple accept="image/*">
+      </label>
+      <button class="btn" id="crear">Subir y crear galería</button>
+      <p id="msg" style="margin-top:12px"></p>
+    </div>
+
+    <h2>Tus galerías</h2>
+    <p id="msg2" style="margin-bottom:12px"></p>
+    <div id="lista"></div>
+  </div>
+
+</section>
+
+<input type="file" id="mas" accept="image/*" multiple hidden>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({
+  "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+}[c]));
+
+let clave = "";
+let agregarA = "";
+try { clave = sessionStorage.getItem("clave") || ""; } catch (e) {}
+
+const cabecera = () => ({
+  "x-admin-password": clave,
+  "content-type": "application/json"
+});
+
+// Reduce la foto a 2000 px y la convierte a JPG
+async function reducir(archivo) {
+  let bmp;
+  try {
+    bmp = await createImageBitmap(archivo, { imageOrientation: "from-image" });
+  } catch (e) {
+    bmp = await createImageBitmap(archivo);
+  }
+  const esc2 = Math.min(1, 2000 / Math.max(bmp.width, bmp.height));
+  const lienzo = document.createElement("canvas");
+  lienzo.width = Math.round(bmp.width * esc2);
+  lienzo.height = Math.round(bmp.height * esc2);
+  lienzo.getContext("2d").drawImage(bmp, 0, 0, lienzo.width, lienzo.height);
+  return new Promise((ok) => lienzo.toBlob(ok, "image/jpeg", 0.85));
+}
+
+// Sube las fotos una por una a la galería
+async function subir(slug, archivos, mensaje) {
+  let fallos = 0;
+  const base = Math.floor(Date.now() / 1000);
+  for (let i = 0; i < archivos.length; i++) {
+    mensaje.textContent = "Subiendo " + (i + 1) + " de " + archivos.length + "…";
+    try {
+      const blob = await reducir(archivos[i]);
+      const r = await fetch(
+        "/api/upload?slug=" + encodeURIComponent(slug) + "&orden=" + (base + i),
+        {
+          method: "POST",
+          headers: {
+            "x-admin-password": clave,
+            "content-type": "application/octet-stream"
+          },
+          body: blob
+        }
+      );
+      if (!r.ok) fallos++;
+    } catch (e) {
+      fallos++;
+    }
+  }
+  return fallos;
+}
+
+function enlace(slug) {
+  return location.origin + "/galerias.html?g=" + slug;
+}
+
+async function cargar() {
+  const r = await fetch("/api/galleries?admin=1", { headers: cabecera() });
+  if (!r.ok) return false;
+  const datos = await r.json();
+  $("lista").innerHTML = datos.length
+    ? datos.map((g) => `
       <div class="card">
-        <label
-          >Contraseña de administrador<input type="password" id="pw" /></label
-        ><button class="btn" id="enter">Entrar</button>
-      </div>
-      <div id="panel" hidden>
-        <div class="card">
-          <h3>Nueva galería</h3>
-          <br />
-          <label>Nombre<input id="title" placeholder="Torneo Sub-17" /></label>
-          <label
-            >Tipo<select id="vis">
-              <option value="private">Privada (solo con enlace)</option>
-              <option value="public">Pública (aparece en el sitio)</option>
-            </select></label
-          >
-          <label
-            >Fotos<input type="file" id="files" multiple accept="image/*"
-          /></label>
-          <button class="btn" id="create">Subir y crear galería</button>
-          <p id="msg" style="margin-top: 12px"></p>
+        <div class="bar">
+          <b>${esc(g.titulo)}</b>
+          <span class="tag">${g.visibilidad === "publica" ? "Pública" : "Privada"} · ${g.total} fotos</span>
         </div>
-        <h2>Tus galerías</h2>
-        <div id="list"></div>
-      </div>
-    </section>
-    <script type="module">
-      import { upload } from "https://esm.sh/@vercel/blob@0.27.0/client";
-      const $ = (i) => document.getElementById(i);
-      let pw = "";
-      const H = () => ({
-        "x-admin-password": pw,
-        "content-type": "application/json",
-      });
-      async function load() {
-        const r = await fetch("/api/galleries?admin=1", { headers: H() });
-        if (!r.ok) {
-          alert("Contraseña incorrecta");
-          return false;
-        }
-        const l = await r.json();
-        $("list").innerHTML =
-          l
-            .map((g) => {
-              const url = location.origin + "/galerias.html?g=" + g.slug;
-              return `<div class="card"><div class="bar"><b>${g.title}</b><span class="tag">${g.visibility === "public" ? "Pública" : "Privada"} · ${g.count} fotos</span></div>
-<input readonly value="${url}" onclick="this.select()"><div class="row"><button class="btn" onclick="navigator.clipboard.writeText('${url}');this.textContent='Copiado'">Copiar enlace</button><a class="btn ghost" style="color:var(--ink)" href="${url}" target="_blank">Abrir</a>
-<button class="btn ghost" style="color:#b00" data-del="${g.slug}">Eliminar</button></div></div>`;
-            })
-            .join("") || "<p>Aún no hay galerías.</p>";
-        return true;
-      }
-      $("list").onclick = async (e) => {
-        const s = e.target.dataset.del;
-        if (!s || !confirm("¿Eliminar esta galería?")) return;
-        await fetch("/api/galleries?slug=" + s, {
-          method: "DELETE",
-          headers: H(),
-        });
-        load();
-      };
-      $("enter").onclick = async () => {
-        pw = $("pw").value;
-        if (await load()) $("panel").hidden = false;
-      };
-      $("create").onclick = async () => {
-        const t = $("title").value.trim(),
-          fs = [...$("files").files];
-        if (!t || !fs.length)
-          return ($("msg").textContent = "Escribe un nombre y elige fotos.");
-        const slug =
-          t
-            .toLowerCase()
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .replace(/[^a-z0-9]+/g, "-")
-            .replace(/^-|-$/g, "") +
-          "-" +
-          Math.random().toString(36).slice(2, 8);
-        const photos = [];
-        try {
-          for (let i = 0; i < fs.length; i++) {
-            $("msg").textContent = `Subiendo ${i + 1} de ${fs.length}…`;
-            const b = await upload(`photos/${slug}/${fs[i].name}`, fs[i], {
-              access: "public",
-              handleUploadUrl: "/api/upload",
-              clientPayload: pw,
-            });
-            photos.push(b.url);
-          }
-          const r = await fetch("/api/galleries", {
-            method: "POST",
-            headers: H(),
-            body: JSON.stringify({
-              slug,
-              title: t,
-              visibility: $("vis").value,
-              photos,
-            }),
-          });
-          if (!r.ok) throw 0;
-          $("msg").textContent = "Galería creada.";
-          $("title").value = "";
-          $("files").value = "";
-          load();
-        } catch (e) {
-          $("msg").textContent =
-            "Error al subir. Revisa la contraseña y la configuración de Blob.";
-        }
-      };
-    </script>
-  </body>
+        <input readonly value="${enlace(g.slug)}" onclick="this.select()">
+        <div class="row">
+          <button class="btn" data-copiar="${g.slug}">Copiar enlace</button>
+          <a class="btn ghost" style="color:var(--ink)" href="${enlace(g.slug)}" target="_blank">Abrir</a>
+          <button class="btn ghost" style="color:var(--ink)" data-mas="${g.slug}">Agregar fotos</button>
+          <button class="btn ghost" style="color:#b00" data-borrar="${g.slug}">Eliminar</button>
+        </div>
+      </div>`).join("")
+    : "<p>Aún no hay galerías.</p>";
+  return true;
+}
+
+async function entrar() {
+  clave = $("clave").value || clave;
+  if (await cargar()) {
+    try { sessionStorage.setItem("clave", clave); } catch (e) {}
+    $("login").hidden = true;
+    $("panel").hidden = false;
+  } else {
+    clave = "";
+    alert("Contraseña incorrecta");
+  }
+}
+
+$("entrar").onclick = entrar;
+
+$("crear").onclick = async () => {
+  const titulo = $("titulo").value.trim();
+  const archivos = [...$("fotos").files];
+  if (!titulo || !archivos.length) {
+    $("msg").textContent = "Escribe un nombre y elige fotos.";
+    return;
+  }
+  $("crear").disabled = true;
+  try {
+    const r = await fetch("/api/galleries", {
+      method: "POST",
+      headers: cabecera(),
+      body: JSON.stringify({ titulo, visibilidad: $("vis").value })
+    });
+    if (!r.ok) throw new Error("No se pudo crear");
+    const { slug } = await r.json();
+    const fallos = await subir(slug, archivos, $("msg"));
+    $("msg").textContent = fallos
+      ? "Galería creada, pero " + fallos + " foto(s) no subieron. Usa Agregar fotos."
+      : "Galería creada. Copia el enlace abajo.";
+    $("titulo").value = "";
+    $("fotos").value = "";
+    await cargar();
+  } catch (e) {
+    $("msg").textContent = "Error al crear la galería.";
+  }
+  $("crear").disabled = false;
+};
+
+$("lista").onclick = async (e) => {
+  const b = e.target;
+  if (b.dataset.copiar) {
+    try {
+      await navigator.clipboard.writeText(enlace(b.dataset.copiar));
+      b.textContent = "Copiado";
+    } catch (err) {
+      b.textContent = "Selecciona y copia";
+    }
+  }
+  if (b.dataset.mas) {
+    agregarA = b.dataset.mas;
+    $("mas").click();
+  }
+  if (b.dataset.borrar) {
+    if (!confirm("¿Eliminar esta galería y todas sus fotos?")) return;
+    await fetch("/api/galleries?slug=" + encodeURIComponent(b.dataset.borrar), {
+      method: "DELETE",
+      headers: cabecera()
+    });
+    cargar();
+  }
+};
+
+$("mas").onchange = async () => {
+  const archivos = [...$("mas").files];
+  if (!archivos.length || !agregarA) return;
+  const fallos = await subir(agregarA, archivos, $("msg2"));
+  $("msg2").textContent = fallos
+    ? fallos + " foto(s) no subieron."
+    : "Fotos agregadas.";
+  $("mas").value = "";
+  cargar();
+};
+
+if (clave) entrar();
+</script>
+
+</body>
 </html>
