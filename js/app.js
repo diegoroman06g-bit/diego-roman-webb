@@ -5,7 +5,7 @@ const ph = (src, alt, pos) =>
   `<div class="ph"><img src="${src}" alt="${alt}" loading="lazy" ${pos ? `style="object-position:${pos}"` : ""} onerror="this.remove()"></div>`;
 
 // Botones y redes
-$("wa-hero").href = wa("Hola Diego, quiero agendar una sesión.");
+$("wa-hero").href = wa("Hola Diego, quiero agendar una sesión, pasame QR.");
 $("wa-foot").href = wa("Hola Diego, quiero información.");
 $("ig").href = S.redes.instagram;
 $("fb").href = S.redes.facebook;
