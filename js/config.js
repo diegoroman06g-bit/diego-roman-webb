@@ -9,6 +9,10 @@ window.SITE = {
     tiktok: "https://www.tiktok.com/@diegoroman_ft"
   },
   moneda: "Bs",
+  instagram: [
+    "https://www.instagram.com/p/DduhodUmMUa/"
+  ],
+
   catalogos: [
     {
       id: "deportiva",
