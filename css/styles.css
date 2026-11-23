@@ -1,10 +1,11 @@
 :root {
-  --ink: #101820;
-  --bg: #f6f8fa;
-  --mute: #5b6773;
-  --line: #d9dfe5;
-  --acc: #1f4fff;
-  --wa: #1fa855;
+  --ink: #0E1B16;
+  --bg: #F3F7F1;
+  --mute: #56645D;
+  --line: #D7E0D8;
+  --acc: #F2B705;
+  --green: #0F6B45;
+  --wa: #1FA855;
 }
 * {
   box-sizing: border-box;
@@ -316,3 +317,63 @@ footer .logo {
 .cl-text span{font-weight:600}
 .back{display:inline-block;margin-bottom:24px;text-decoration:none;font-weight:600;color:var(--mute)}
 .det{color:var(--mute);margin-bottom:22px}
+
+/* ===== PALETA NUEVA ===== */
+header {
+  border-bottom: 3px solid var(--acc);
+}
+
+.btn:not(.wa):not(.ghost) {
+  background: var(--acc);
+  color: var(--ink);
+}
+
+h2::after {
+  content: "";
+  display: block;
+  width: 56px;
+  height: 5px;
+  background: var(--acc);
+  margin-top: 14px;
+}
+
+footer h2::after {
+  margin-inline: auto;
+}
+
+.pk strong {
+  color: var(--green);
+}
+
+/* Franjas de color de lado a lado */
+#sobre-mi {
+  background: #0E3B2C;
+  box-shadow: 0 0 0 100vmax #0E3B2C;
+  clip-path: inset(0 -100vmax);
+  color: #fff;
+}
+
+#sobre-mi h2 {
+  color: var(--acc);
+}
+
+#catalogos {
+  background: #E4EEE1;
+  box-shadow: 0 0 0 100vmax #E4EEE1;
+  clip-path: inset(0 -100vmax);
+}
+
+#galerias-cta {
+  background: var(--acc);
+  box-shadow: 0 0 0 100vmax var(--acc);
+  clip-path: inset(0 -100vmax);
+}
+
+#galerias-cta h2::after {
+  background: var(--ink);
+}
+
+#galerias-cta .btn {
+  background: var(--ink);
+  color: #fff;
+}
