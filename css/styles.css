@@ -377,3 +377,40 @@ footer h2::after {
   background: var(--ink);
   color: #fff;
 }
+
+/* ===== PORTADA NUEVA ===== */
+.portada {
+  background: #0E3B2C;
+  padding: 0;
+  max-width: none;
+  margin: 0;
+}
+
+.portada-img {
+  display: block;
+  width: 100%;
+  max-width: 1600px;
+  height: auto;
+  margin: 0 auto;
+}
+
+.portada-texto {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 36px 5vw 56px;
+  color: #fff;
+  display: grid;
+  gap: 18px;
+}
+
+.portada-texto h1 {
+  font-size: clamp(2rem, 6vw, 4rem);
+  font-weight: 800;
+  max-width: 800px;
+}
+
+.portada-texto p {
+  max-width: 560px;
+  font-size: 1.1rem;
+  opacity: .92;
+}
