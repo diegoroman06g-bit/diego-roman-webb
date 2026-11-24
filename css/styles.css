@@ -414,3 +414,48 @@ footer h2::after {
   font-size: 1.1rem;
   opacity: .92;
 }
+
+/* ===== PRESENTACIÓN ===== */
+.about .ph {
+  border: 5px solid var(--acc);
+  box-shadow: 14px 14px 0 rgba(242, 183, 5, .28);
+}
+
+.about .ph img {
+  object-position: center 20%;
+}
+
+.about-texto p {
+  font-size: 1.1rem;
+  max-width: 560px;
+}
+
+.about-texto p + p {
+  margin-top: 16px;
+}
+
+.datos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  margin: 28px 0;
+}
+
+.dato {
+  border: 1px solid rgba(255, 255, 255, .25);
+  border-radius: 6px;
+  padding: 14px;
+  display: grid;
+  gap: 2px;
+}
+
+.dato strong {
+  font-family: "Archivo", sans-serif;
+  font-size: 1.25rem;
+  color: var(--acc);
+}
+
+.dato span {
+  font-size: .85rem;
+  opacity: .85;
+}
