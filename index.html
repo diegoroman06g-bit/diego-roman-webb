@@ -114,6 +114,13 @@
 </footer>
 
 <script src="js/config.js"></script>
-<script src="js/app.js"></script>
+<script src="js/precios.js"></script>
+<script>
+  cargarPrecios().finally(function () {
+    var s = document.createElement("script");
+    s.src = "js/app.js";
+    document.body.appendChild(s);
+  });
+</script>
 </body>
 </html>

@@ -4,9 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Catálogo | Diego Román</title>
-    <link rel="icon" type="image/png" href="images/favicon.png">
+  <link rel="icon" type="image/png" href="images/favicon.png">
   <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
-  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800&family=Work+Sans:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
@@ -19,25 +18,29 @@
 </header>
 
 <section>
-  <div id="app"></div>
+  <div id="app"><p>Cargando…</p></div>
 </section>
 
 <script src="js/config.js"></script>
+<script src="js/precios.js"></script>
 <script>
-const S = window.SITE;
-const $ = (id) => document.getElementById(id);
-const wa = (t) => `https://wa.me/${S.whatsapp}?text=${encodeURIComponent(t)}`;
-const ph = (src, alt) =>
-  `<div class="ph"><img src="${src}" alt="${alt}" loading="lazy" onerror="this.remove()"></div>`;
+cargarPrecios().finally(function () {
+  const S = window.SITE;
+  const $ = (id) => document.getElementById(id);
+  const wa = (t) => `https://wa.me/${S.whatsapp}?text=${encodeURIComponent(t)}`;
+  const ph = (src, alt) =>
+    `<div class="ph"><img src="${src}" alt="${alt}" loading="lazy" onerror="this.remove()"></div>`;
 
-const id = new URLSearchParams(location.search).get("c");
-const c = S.catalogos.find((x) => x.id === id);
-const otro = S.catalogos.find((x) => x.id !== id);
+  const id = new URLSearchParams(location.search).get("c");
+  const c = S.catalogos.find((x) => x.id === id);
+  const otro = S.catalogos.find((x) => x.id !== id);
 
-if (!c) {
-  $("app").innerHTML =
-    '<h2>Catálogo no encontrado</h2><a class="btn" href="/#catalogos">Volver al inicio</a>';
-} else {
+  if (!c) {
+    $("app").innerHTML =
+      '<h2>Catálogo no encontrado</h2><a class="btn" href="/#catalogos">Volver al inicio</a>';
+    return;
+  }
+
   document.title = c.titulo.split(" (")[0] + " | Diego Román";
   $("app").innerHTML = `
     <a class="back" href="/#catalogos">← Volver a catálogos</a>
@@ -59,17 +62,13 @@ if (!c) {
         )
         .join("")}
     </div>
-    ${
-      c.notas
-        ? `<ul class="notas">${c.notas.map((n) => `<li>${n}</li>`).join("")}</ul>`
-        : ""
-    }
+    ${c.notas ? `<ul class="notas">${c.notas.map((n) => `<li>${n}</li>`).join("")}</ul>` : ""}
     ${
       otro
         ? `<br><a class="btn ghost" style="color:var(--ink)" href="catalogo.html?c=${otro.id}">Ver también: ${otro.titulo.split(" (")[0]}</a>`
         : ""
     }`;
-}
+});
 </script>
 
 </body>
