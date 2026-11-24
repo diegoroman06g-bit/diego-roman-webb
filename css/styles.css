@@ -459,3 +459,110 @@ footer h2::after {
   font-size: .85rem;
   opacity: .85;
 }
+
+/* ===== EFECTOS AL PASAR EL CURSOR ===== */
+
+/* Transiciones suaves */
+.btn {
+  transition: transform .2s ease, background-color .2s ease, color .2s ease, box-shadow .2s ease;
+}
+
+.ph img,
+.fotos .item img {
+  transition: transform .5s ease;
+}
+
+.cardlink,
+.pk .item,
+a.card {
+  transition: transform .3s ease, box-shadow .3s ease;
+}
+
+.fotos .item {
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+/* Raya dorada del menú */
+nav a {
+  position: relative;
+}
+
+nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 3px;
+  background: var(--acc);
+  transform: scaleX(0);
+  transition: transform .25s ease;
+}
+
+/* Pequeño hundido al tocar un botón (sirve también en celular) */
+.btn:active {
+  transform: scale(.97);
+}
+
+/* Solo en pantallas con mouse, para que en el celular no se queden pegados */
+@media (hover: hover) {
+  nav a:hover::after {
+    transform: scaleX(1);
+  }
+
+  .btn:hover {
+    transform: translateY(-2px) scale(1.04);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, .25);
+  }
+
+  .btn:not(.wa):not(.ghost):hover {
+    background: #FFD23F;
+    color: var(--ink);
+  }
+
+  .btn.wa:hover {
+    background: #17893F;
+  }
+
+  .btn.ghost:hover {
+    background: var(--acc);
+    border-color: var(--acc);
+    color: var(--ink);
+  }
+
+  #galerias-cta .btn:hover {
+    background: var(--green);
+    color: #fff;
+  }
+
+  /* Zoom en las fotos */
+  .ph:hover img,
+  .fotos .item:hover img {
+    transform: scale(1.08);
+  }
+
+  /* Tarjetas que se levantan */
+  .cardlink:hover,
+  .pk .item:hover,
+  a.card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 30px rgba(0, 0, 0, .22);
+  }
+}
+
+/* Si la persona pidió menos movimiento en su dispositivo, se apagan */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+
+  .ph:hover img,
+  .fotos .item:hover img,
+  .btn:hover,
+  .cardlink:hover,
+  .pk .item:hover,
+  a.card:hover {
+    transform: none !important;
+  }
+}
